@@ -6,6 +6,7 @@ import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import hu.bme.aut.currencyconverter.data.CurrencyEnum
 import hu.bme.aut.currencyconverter.data.CurrencyWithRate
 import hu.bme.aut.currencyconverter.data.ListToQueryStringConverter
@@ -25,6 +26,7 @@ class CurrencyListActivity : AppCompatActivity(), CurrencyListAdapter.CurrencyCl
 
     private lateinit var database: CurrencyDatabase
     private lateinit var adapter: CurrencyListAdapter
+    private lateinit var swipeContainer: SwipeRefreshLayout
 
     private lateinit var baseCurrency: CurrencySelection
 
@@ -37,13 +39,20 @@ class CurrencyListActivity : AppCompatActivity(), CurrencyListAdapter.CurrencyCl
         this.initDb()
         this.initRecyclerView()
 
+        swipeContainer = binding.swipeContainer
+        swipeContainer.setOnRefreshListener {
+            CoroutineScope(Dispatchers.IO).launch {
+                loadCurrencyRates()
+            }
+        }
+
         setContentView(binding.root)
     }
 
     private fun initDb() {
         CoroutineScope(Dispatchers.IO).launch {
             initSelectionsInDb()
-            fetchItems()
+            loadCurrencyRates()
         }
     }
 
@@ -92,16 +101,21 @@ class CurrencyListActivity : AppCompatActivity(), CurrencyListAdapter.CurrencyCl
                 Toast.makeText(this@CurrencyListActivity, "Network request error occured, check LOG", Toast.LENGTH_LONG).show()
             }
         })
+
+        swipeContainer.isRefreshing = false
     }
 
     private fun convertResponseToCurrencyItems(response: CurrencyResponse?): List<CurrencyWithRate> {
-        val items = mutableListOf<CurrencyWithRate>()
+/*        val items = mutableListOf<CurrencyWithRate>()
+
 
         response!!.rates.keys.forEach {
             items.add(CurrencyWithRate(it, response.rates[it]))
-        }
+        }*/
 
-        return items
+        return response!!.rates.keys.map {
+            CurrencyWithRate(it, response.rates[it])
+        }
     }
 
     private fun initRecyclerView() {
@@ -109,16 +123,6 @@ class CurrencyListActivity : AppCompatActivity(), CurrencyListAdapter.CurrencyCl
 
         binding.rvMain.layoutManager = LinearLayoutManager(this)
         binding.rvMain.adapter = adapter
-    }
-
-    private suspend fun fetchItems() {
-        val items = mutableListOf<CurrencyWithRate>()
-
-        database.currencySelectionDao().getAll().forEach {
-            items.add(CurrencyWithRate(name = it.name, rate = 100.0))
-        }
-
-        this.loadCurrencyRates()
     }
 
     private fun updateItems(items: List<CurrencyWithRate>) {
@@ -152,7 +156,7 @@ class CurrencyListActivity : AppCompatActivity(), CurrencyListAdapter.CurrencyCl
     override fun onCurrencyClicked(currencyItem: CurrencySelection) {
         CoroutineScope(Dispatchers.IO).launch {
             updateBaseCurrency(currencyItem)
-            fetchItems()
+            loadCurrencyRates()
         }
     }
 }
