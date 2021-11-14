@@ -2,17 +2,17 @@ package hu.bme.aut.currencyconverter.data.repository.conversion
 
 import androidx.room.*
 import com.google.gson.annotations.SerializedName
-import hu.bme.aut.currencyconverter.data.repository.selection.CurrencyName
+import hu.bme.aut.currencyconverter.data.repository.selection.CurrencySelection
 
 @Entity(tableName = "conversion",
         foreignKeys = [
             ForeignKey(
-                entity = CurrencyName::class,
+                entity = CurrencySelection::class,
                 parentColumns = arrayOf("id"),
                 childColumns = arrayOf("from"),
             ),
             ForeignKey(
-                entity = CurrencyName::class,
+                entity = CurrencySelection::class,
                 parentColumns = arrayOf("id"),
                 childColumns = arrayOf("to"),
             ),

@@ -5,10 +5,16 @@ import androidx.room.*
 @Dao
 interface CurrencySelectionDao {
     @Query("SELECT * FROM currencySelection")
-    fun getAll(): List<CurrencyName>
+    fun getAll(): List<CurrencySelection>
+
+    @Query("SELECT * FROM currencySelection WHERE selected = 1 AND base = 0")
+    fun getSelected(): List<CurrencySelection>
+
+    @Query("SELECT * FROM currencySelection WHERE base = 1")
+    fun getBase(): CurrencySelection?
 
     @Insert
-    fun insert(currencyName: CurrencyName): Long
+    fun insert(currency: CurrencySelection): Long
 
     @Query("DELETE FROM currencySelection WHERE name = :currencyName")
     fun delete(currencyName: String)
@@ -17,8 +23,10 @@ interface CurrencySelectionDao {
     fun deleteAll(): Unit
 
     @Transaction
-    fun changeBase(previous: CurrencyName, current: CurrencyName) {
-        insert(previous)
+    fun changeBase(previous: CurrencySelection, current: CurrencySelection) {
         delete(current.name)
+        delete(previous.name)
+        insert(CurrencySelection(name = current.name, base = true))
+        insert(CurrencySelection(name = previous.name, base = false))
     }
 }

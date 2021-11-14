@@ -7,7 +7,7 @@ import androidx.recyclerview.widget.RecyclerView
 import hu.bme.aut.currencyconverter.R
 import hu.bme.aut.currencyconverter.data.CurrencyEnum
 import hu.bme.aut.currencyconverter.data.CurrencyWithRate
-import hu.bme.aut.currencyconverter.data.repository.selection.CurrencyName
+import hu.bme.aut.currencyconverter.data.repository.selection.CurrencySelection
 import hu.bme.aut.currencyconverter.databinding.ItemCurrencyListBinding
 
 class CurrencyListAdapter(private val listener: CurrencyClickedListener): RecyclerView.Adapter<CurrencyListAdapter.CurrencyListItemViewHolder>() {
@@ -28,7 +28,7 @@ class CurrencyListAdapter(private val listener: CurrencyClickedListener): Recycl
         holder.binding.tvRate.text = currencyItem.rate.toString()
 
         holder.binding.currencyRow.setOnClickListener {
-            listener.onCurrencyClicked(CurrencyName(name = currencyItem.name))
+            listener.onCurrencyClicked(CurrencySelection(name = currencyItem.name))
         }
     }
 
@@ -55,6 +55,6 @@ class CurrencyListAdapter(private val listener: CurrencyClickedListener): Recycl
     }
 
     interface CurrencyClickedListener {
-        fun onCurrencyClicked(currencyItem: CurrencyName)
+        fun onCurrencyClicked(currencyItem: CurrencySelection)
     }
 }

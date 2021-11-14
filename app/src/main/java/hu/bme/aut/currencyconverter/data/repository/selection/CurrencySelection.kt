@@ -5,7 +5,7 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 
 @Entity(tableName = "currencySelection")
-data class CurrencyName(
+data class CurrencySelection(
 
     @ColumnInfo(name = "id")
     @PrimaryKey(autoGenerate = true)
@@ -13,4 +13,10 @@ data class CurrencyName(
 
     @ColumnInfo(name = "name")
     var name: String,
+
+    @ColumnInfo(name = "selected")
+    var selected: Boolean? = true,
+
+    @ColumnInfo(name = "base")
+    var base: Boolean? = false,
 )

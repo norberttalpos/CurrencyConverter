@@ -1,9 +1,9 @@
 package hu.bme.aut.currencyconverter.data
 
-import hu.bme.aut.currencyconverter.data.repository.selection.CurrencyName
+import hu.bme.aut.currencyconverter.data.repository.selection.CurrencySelection
 
 object ListToQueryStringConverter {
-    fun convertListToQueryString(currencyList: List<CurrencyName>): String {
+    fun convertListToQueryString(currencyList: List<CurrencySelection>): String {
         var queryString = ""
 
         currencyList.forEachIndexed { index, element ->

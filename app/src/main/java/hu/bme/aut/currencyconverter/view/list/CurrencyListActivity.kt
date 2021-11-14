@@ -1,7 +1,6 @@
 package hu.bme.aut.currencyconverter.view.list
 
 import android.content.ContentValues.TAG
-import android.os.AsyncTask
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
@@ -11,18 +10,14 @@ import hu.bme.aut.currencyconverter.data.CurrencyEnum
 import hu.bme.aut.currencyconverter.data.CurrencyWithRate
 import hu.bme.aut.currencyconverter.data.ListToQueryStringConverter
 import hu.bme.aut.currencyconverter.data.repository.CurrencyDatabase
-import hu.bme.aut.currencyconverter.data.repository.selection.CurrencyName
+import hu.bme.aut.currencyconverter.data.repository.selection.CurrencySelection
 import hu.bme.aut.currencyconverter.databinding.ActivityCurrencyListBinding
 import hu.bme.aut.currencyconverter.network.NetworkManager
 import hu.bme.aut.currencyconverter.network.response.CurrencyResponse
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
+import kotlinx.coroutines.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import kotlin.concurrent.thread
 
 class CurrencyListActivity : AppCompatActivity(), CurrencyListAdapter.CurrencyClickedListener {
 
@@ -31,48 +26,55 @@ class CurrencyListActivity : AppCompatActivity(), CurrencyListAdapter.CurrencyCl
     private lateinit var database: CurrencyDatabase
     private lateinit var adapter: CurrencyListAdapter
 
-    private lateinit var baseCurrency: CurrencyName
+    private lateinit var baseCurrency: CurrencySelection
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityCurrencyListBinding.inflate(layoutInflater)
 
-        baseCurrency = CurrencyName(name = CurrencyEnum.CHF.name)
-
-        binding.tvBaseCurrency.text = baseCurrency.name
-
         database = CurrencyDatabase.getDatabase(applicationContext)
 
         this.initDb()
         this.initRecyclerView()
-        this.changeBaseCurrencyFlag(this.baseCurrency)
 
         setContentView(binding.root)
     }
 
     private fun initDb() {
-        GlobalScope.launch {
+        CoroutineScope(Dispatchers.IO).launch {
             initSelectionsInDb()
             fetchItems()
         }
     }
 
     private suspend fun initSelectionsInDb() {
-        //TODO csak az eltaroltat
-
         withContext(Dispatchers.IO) {
-            database.currencySelectionDao().deleteAll()
+            val persistedSelections = database.currencySelectionDao().getAll()
 
-            CurrencyEnum.values().forEach {
-                if (it.name != baseCurrency.name)
-                    database.currencySelectionDao().insert(CurrencyName(name = it.name))
+            if(persistedSelections.isEmpty()) {
+                baseCurrency = CurrencySelection(name = CurrencyEnum.HUF.name, selected = true, base = true)
+                CurrencyEnum.values().forEach {
+                    if(it.name != CurrencyEnum.HUF.name)
+                        database.currencySelectionDao().insert(CurrencySelection(name = it.name, selected = true, base = false))
+                    else {
+                        database.currencySelectionDao().insert(baseCurrency)
+                    }
+                }
+            }
+            else {
+                baseCurrency = database.currencySelectionDao().getBase()!!
+            }
+
+            runOnUiThread {
+                binding.tvBaseCurrency.text = baseCurrency.name
+                changeBaseCurrencyFlag(baseCurrency)
             }
         }
     }
 
     private suspend fun loadCurrencyRates() {
-        val toCurrencies: List<CurrencyName> = withContext(Dispatchers.IO) {
-            database.currencySelectionDao().getAll()
+        val toCurrencies: List<CurrencySelection> = withContext(Dispatchers.IO) {
+            database.currencySelectionDao().getSelected()
         }
 
         val toCurrenciesAsString = ListToQueryStringConverter.convertListToQueryString(toCurrencies)
@@ -125,28 +127,32 @@ class CurrencyListActivity : AppCompatActivity(), CurrencyListAdapter.CurrencyCl
         }
     }
 
-    private suspend fun updateBaseCurrency(currencyItem: CurrencyName) {
+    private suspend fun updateBaseCurrency(currencyItem: CurrencySelection) {
 
-        val previous = this.baseCurrency
-        this.baseCurrency = currencyItem
-        runOnUiThread {
-            this.binding.tvBaseCurrency.text = currencyItem.name
-        }
+        var previous = this.baseCurrency
 
         withContext(Dispatchers.IO) {
             database.currencySelectionDao().changeBase(previous, currencyItem)
+
+            baseCurrency = database.currencySelectionDao().getBase()!!
+
+            previous = baseCurrency
+        }
+
+        runOnUiThread {
+            this.binding.tvBaseCurrency.text = baseCurrency.name
+            this.changeBaseCurrencyFlag(baseCurrency)
         }
     }
 
-    private fun changeBaseCurrencyFlag(currencyItem: CurrencyName) {
+    private fun changeBaseCurrencyFlag(currencyItem: CurrencySelection) {
         binding.ivBaseCurrency.setImageResource(CurrencyListAdapter.getImageResource(currencyItem.name))
     }
 
-    override fun onCurrencyClicked(currencyItem: CurrencyName) {
-        GlobalScope.launch {
+    override fun onCurrencyClicked(currencyItem: CurrencySelection) {
+        CoroutineScope(Dispatchers.IO).launch {
             updateBaseCurrency(currencyItem)
             fetchItems()
         }
-        this.changeBaseCurrencyFlag(currencyItem)
     }
 }
