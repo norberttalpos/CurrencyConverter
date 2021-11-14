@@ -10,6 +10,15 @@ interface CurrencySelectionDao {
     @Insert
     fun insert(currencyName: CurrencyName): Long
 
-    @Delete
-    fun delete(currencyName: CurrencyName)
+    @Query("DELETE FROM currencySelection WHERE name = :currencyName")
+    fun delete(currencyName: String)
+
+    @Query("DELETE FROM currencySelection")
+    fun deleteAll(): Unit
+
+    @Transaction
+    fun changeBase(previous: CurrencyName, current: CurrencyName) {
+        insert(previous)
+        delete(current.name)
+    }
 }

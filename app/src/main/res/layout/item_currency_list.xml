@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/currencyRow"
+    android:layout_width="match_parent"
+    android:layout_height="60dp"
+    android:orientation="horizontal"
+    android:paddingBottom="8dp"
+    android:paddingLeft="16dp"
+    android:paddingRight="16dp"
+    android:paddingTop="8dp"
+    android:layout_marginVertical="10dp"
+    >
+
+    <LinearLayout
+        android:layout_width="200dp"
+        android:layout_height="match_parent"
+        android:orientation="horizontal"
+        android:layout_alignParentStart="true"
+        android:weightSum="5"
+        >
+
+        <ImageView
+            android:id="@+id/ivFlag"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="2"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="10dp"
+            android:paddingVertical="3dp"
+            android:paddingHorizontal="5dp"
+            android:src="@drawable/huf" />
+
+        <TextView
+            android:id="@+id/tvName"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="3"
+            android:textSize="25sp"
+            tools:text="Name" />
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/tvRate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="25sp"
+        android:layout_alignParentEnd="true"
+        tools:text="Rate" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@android:color/darker_gray"
+        android:layout_alignParentBottom="true"
+        />
+
+</RelativeLayout>
