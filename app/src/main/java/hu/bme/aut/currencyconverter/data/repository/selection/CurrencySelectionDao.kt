@@ -1,6 +1,9 @@
 package hu.bme.aut.currencyconverter.data.repository.selection
 
-import androidx.room.*
+import androidx.room.Dao
+import androidx.room.Insert
+import androidx.room.Query
+import androidx.room.Transaction
 
 @Dao
 interface CurrencySelectionDao {
@@ -28,5 +31,22 @@ interface CurrencySelectionDao {
         delete(previous.name)
         insert(CurrencySelection(name = current.name, base = true))
         insert(CurrencySelection(name = previous.name, base = false))
+    }
+
+    @Transaction
+    fun toggleSelection(selectionToToggle: CurrencySelection) {
+        delete(selectionToToggle.name)
+
+        val name = selectionToToggle.name
+
+        val selected = !selectionToToggle.selected!!
+
+        var base: Boolean? = false
+        if(selectionToToggle.selected == true)
+            base = selectionToToggle.base
+        else
+            base = false
+
+        insert(CurrencySelection(name = name, selected = selected, base = base))
     }
 }

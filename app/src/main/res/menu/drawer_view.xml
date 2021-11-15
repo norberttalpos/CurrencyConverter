@@ -1,0 +1,17 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_currency_list"
+            android:title="Main" />
+        <item
+            android:id="@+id/nav_currency_select"
+            android:title="Select" />
+        <item
+            android:id="@+id/nav_convert"
+            android:title="Convert" />
+        <item
+            android:id="@+id/nav_prev_conversions"
+            android:title="Previous Conversions" />
+    </group>
+</menu>
