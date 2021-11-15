@@ -1,11 +1,11 @@
-package hu.bme.aut.currencyconverter.view.select
+package hu.bme.aut.currencyconverter.view.fragments.select
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import hu.bme.aut.currencyconverter.data.repository.selection.CurrencySelection
 import hu.bme.aut.currencyconverter.databinding.ItemSelectListBinding
-import hu.bme.aut.currencyconverter.view.CurrencyFlagImageGetter
+import hu.bme.aut.currencyconverter.view.getImageResource
 
 class SelectListAdapter(private val listener: SelectionCurrencyClickedListener): RecyclerView.Adapter<SelectListAdapter.SelectListItemViewHolder>() {
 
@@ -20,7 +20,7 @@ class SelectListAdapter(private val listener: SelectionCurrencyClickedListener):
     override fun onBindViewHolder(holder: SelectListItemViewHolder, position: Int) {
         val currencyItem = items[position]
 
-        holder.binding.ivFlag.setImageResource(CurrencyFlagImageGetter.getImageResource(currencyItem.name))
+        holder.binding.ivFlag.setImageResource(getImageResource(currencyItem.name))
         holder.binding.tvName.text = currencyItem.name
         holder.binding.cbSelected.isChecked = currencyItem.selected
 

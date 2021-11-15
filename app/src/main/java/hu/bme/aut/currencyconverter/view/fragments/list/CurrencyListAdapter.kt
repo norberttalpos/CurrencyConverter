@@ -1,15 +1,12 @@
-package hu.bme.aut.currencyconverter.view.list;
+package hu.bme.aut.currencyconverter.view.fragments.list;
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.annotation.DrawableRes
 import androidx.recyclerview.widget.RecyclerView
-import hu.bme.aut.currencyconverter.R
-import hu.bme.aut.currencyconverter.data.CurrencyEnum
 import hu.bme.aut.currencyconverter.data.CurrencyWithRate
 import hu.bme.aut.currencyconverter.data.repository.selection.CurrencySelection
 import hu.bme.aut.currencyconverter.databinding.ItemCurrencyListBinding
-import hu.bme.aut.currencyconverter.view.CurrencyFlagImageGetter
+import hu.bme.aut.currencyconverter.view.getImageResource
 
 class CurrencyListAdapter(private val listener: CurrencyClickedListener): RecyclerView.Adapter<CurrencyListAdapter.CurrencyListItemViewHolder>() {
 
@@ -24,7 +21,7 @@ class CurrencyListAdapter(private val listener: CurrencyClickedListener): Recycl
     override fun onBindViewHolder(holder: CurrencyListItemViewHolder, position: Int) {
         val currencyItem = items[position]
 
-        holder.binding.ivFlag.setImageResource(CurrencyFlagImageGetter.getImageResource(currencyItem.name))
+        holder.binding.ivFlag.setImageResource(getImageResource(currencyItem.name))
         holder.binding.tvName.text = currencyItem.name
         holder.binding.tvRate.text = currencyItem.rate.toString()
 

@@ -2,8 +2,12 @@ package hu.bme.aut.currencyconverter.view
 
 import android.os.Bundle
 import android.view.MenuItem
+import android.view.View
+import android.view.inputmethod.InputMethodManager
+import androidx.annotation.DrawableRes
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.Fragment
 import com.google.android.material.navigation.NavigationView
@@ -12,13 +16,13 @@ import hu.bme.aut.currencyconverter.data.CurrencyEnum
 import hu.bme.aut.currencyconverter.data.repository.CurrencyDatabase
 import hu.bme.aut.currencyconverter.data.repository.selection.CurrencySelection
 import hu.bme.aut.currencyconverter.databinding.ActivityMainBinding
-import hu.bme.aut.currencyconverter.view.list.CurrencyListFragment
-import hu.bme.aut.currencyconverter.view.select.SelectListFragment
+import hu.bme.aut.currencyconverter.view.fragments.conversion.ConversionFragment
+import hu.bme.aut.currencyconverter.view.fragments.list.CurrencyListFragment
+import hu.bme.aut.currencyconverter.view.fragments.select.SelectListFragment
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
 
@@ -100,7 +104,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 fragment = SelectListFragment()
             }
             R.id.nav_convert -> {
-                fragment = CurrencyListFragment()
+                fragment = ConversionFragment()
             }
             R.id.nav_prev_conversions -> {
                 fragment = CurrencyListFragment()

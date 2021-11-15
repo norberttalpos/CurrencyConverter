@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/selectRow"
+    android:id="@+id/dialogRow"
     android:layout_width="match_parent"
     android:layout_height="60dp"
     android:orientation="horizontal"
@@ -16,12 +16,12 @@
         android:layout_width="200dp"
         android:layout_height="match_parent"
         android:orientation="horizontal"
-        android:layout_alignParentStart="true"
+        android:layout_centerHorizontal="true"
         android:weightSum="5"
         >
 
         <ImageView
-            android:id="@+id/ivFlag"
+            android:id="@+id/ivFlagDialog"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="2"
@@ -32,7 +32,7 @@
             android:src="@drawable/huf" />
 
         <TextView
-            android:id="@+id/tvName"
+            android:id="@+id/tvNameDialog"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="3"
@@ -40,16 +40,6 @@
             tools:text="Name" />
 
     </LinearLayout>
-
-    <CheckBox
-        android:id="@+id/cbSelected"
-        android:layout_width="50dp"
-        android:layout_height="match_parent"
-        android:layout_alignParentEnd="true"
-        android:layout_gravity="center_vertical"
-        android:scaleX="1.3"
-        android:scaleY="1.3"
-        />
 
     <View
         android:layout_width="match_parent"

@@ -1,4 +1,4 @@
-package hu.bme.aut.currencyconverter.view.list
+package hu.bme.aut.currencyconverter.view.fragments.list
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -15,7 +15,7 @@ import hu.bme.aut.currencyconverter.data.repository.selection.CurrencySelection
 import hu.bme.aut.currencyconverter.databinding.FragmentCurrencyListBinding
 import hu.bme.aut.currencyconverter.network.NetworkManager
 import hu.bme.aut.currencyconverter.network.response.CurrencyResponse
-import hu.bme.aut.currencyconverter.view.CurrencyFlagImageGetter
+import hu.bme.aut.currencyconverter.view.getImageResource
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -139,6 +139,6 @@ class CurrencyListFragment : Fragment(), CurrencyListAdapter.CurrencyClickedList
     }
 
     private fun changeBaseCurrencyFlag(currencyItem: CurrencySelection) {
-        binding.ivBaseCurrency.setImageResource(CurrencyFlagImageGetter.getImageResource(currencyItem.name))
+        binding.ivBaseCurrency.setImageResource(getImageResource(currencyItem.name))
     }
 }

@@ -1,4 +1,4 @@
-package hu.bme.aut.currencyconverter.view.select
+package hu.bme.aut.currencyconverter.view.fragments.select
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -16,7 +16,6 @@ import hu.bme.aut.currencyconverter.databinding.FragmentSelectListBinding
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.selects.select
 import kotlinx.coroutines.withContext
 
 class SelectListFragment : Fragment(), SelectListAdapter.SelectionCurrencyClickedListener {
@@ -102,9 +101,8 @@ class SelectListFragment : Fragment(), SelectListAdapter.SelectionCurrencyClicke
         }
     }
 
-    fun View.hideKeyboard() {
+    private fun View.hideKeyboard() {
         val inputMethodManager = requireContext().getSystemService(android.content.Context.INPUT_METHOD_SERVICE) as? InputMethodManager
         inputMethodManager?.hideSoftInputFromWindow(this.windowToken, 0)
     }
-
 }
