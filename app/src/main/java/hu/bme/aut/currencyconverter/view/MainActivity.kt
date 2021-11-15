@@ -8,9 +8,16 @@ import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.Fragment
 import com.google.android.material.navigation.NavigationView
 import hu.bme.aut.currencyconverter.R
+import hu.bme.aut.currencyconverter.data.CurrencyEnum
+import hu.bme.aut.currencyconverter.data.repository.CurrencyDatabase
+import hu.bme.aut.currencyconverter.data.repository.selection.CurrencySelection
 import hu.bme.aut.currencyconverter.databinding.ActivityMainBinding
 import hu.bme.aut.currencyconverter.view.list.CurrencyListFragment
 import hu.bme.aut.currencyconverter.view.select.SelectListFragment
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
@@ -20,15 +27,45 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     private lateinit var drawerLayout: DrawerLayout
     private lateinit var actionBarDrawerToggle: ActionBarDrawerToggle
 
+    private lateinit var database: CurrencyDatabase
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
 
+        database = CurrencyDatabase.getDatabase(applicationContext)
+
         this.initDrawer()
+
+        this.initDb()
 
         supportFragmentManager.beginTransaction().replace(R.id.flContent, CurrencyListFragment()).commit()
 
         setContentView(binding.root)
+    }
+
+    private fun initDb() {
+        CoroutineScope(Dispatchers.IO).launch {
+            initSelectionsInDb()
+        }
+    }
+
+    private suspend fun initSelectionsInDb() {
+        withContext(Dispatchers.IO) {
+            val persistedSelections = database.currencySelectionDao().getAll()
+
+            if(persistedSelections.isEmpty()) {
+                val baseCurrency = CurrencySelection(name = CurrencyEnum.HUF.name, selected = true, base = true)
+
+                CurrencyEnum.values().forEach {
+                    if(it.name != CurrencyEnum.HUF.name)
+                        database.currencySelectionDao().insert(CurrencySelection(name = it.name, selected = true, base = false))
+                    else {
+                        database.currencySelectionDao().insert(baseCurrency)
+                    }
+                }
+            }
+        }
     }
 
     private fun initDrawer() {

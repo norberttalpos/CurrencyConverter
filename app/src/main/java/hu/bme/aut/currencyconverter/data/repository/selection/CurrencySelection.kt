@@ -15,8 +15,8 @@ data class CurrencySelection(
     var name: String,
 
     @ColumnInfo(name = "selected")
-    var selected: Boolean? = true,
+    var selected: Boolean = true,
 
     @ColumnInfo(name = "base")
-    var base: Boolean? = false,
+    var base: Boolean = false,
 )

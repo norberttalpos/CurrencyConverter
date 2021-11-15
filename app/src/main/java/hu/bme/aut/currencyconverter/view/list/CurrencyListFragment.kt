@@ -8,7 +8,6 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-import hu.bme.aut.currencyconverter.data.CurrencyEnum
 import hu.bme.aut.currencyconverter.data.CurrencyWithRate
 import hu.bme.aut.currencyconverter.data.ListToQueryStringConverter
 import hu.bme.aut.currencyconverter.data.repository.CurrencyDatabase
@@ -39,8 +38,6 @@ class CurrencyListFragment : Fragment(), CurrencyListAdapter.CurrencyClickedList
 
         database = CurrencyDatabase.getDatabase(requireActivity().applicationContext)
 
-        this.initDb()
-
         return binding.root
     }
 
@@ -55,39 +52,21 @@ class CurrencyListFragment : Fragment(), CurrencyListAdapter.CurrencyClickedList
                 loadCurrencyRates()
             }
         }
-    }
 
-
-    private fun initDb() {
         CoroutineScope(Dispatchers.IO).launch {
-            initSelectionsInDb()
+            initBaseCurrency()
             loadCurrencyRates()
         }
     }
 
-    private suspend fun initSelectionsInDb() {
+    private suspend fun initBaseCurrency() {
         withContext(Dispatchers.IO) {
-            val persistedSelections = database.currencySelectionDao().getAll()
+            baseCurrency = database.currencySelectionDao().getBase()!!
+        }
 
-            if(persistedSelections.isEmpty()) {
-                baseCurrency = CurrencySelection(name = CurrencyEnum.HUF.name, selected = true, base = true)
-
-                CurrencyEnum.values().forEach {
-                    if(it.name != CurrencyEnum.HUF.name)
-                        database.currencySelectionDao().insert(CurrencySelection(name = it.name, selected = true, base = false))
-                    else {
-                        database.currencySelectionDao().insert(baseCurrency)
-                    }
-                }
-            }
-            else {
-                baseCurrency = database.currencySelectionDao().getBase()!!
-            }
-
-            requireActivity().runOnUiThread {
-                binding.tvBaseCurrency.text = baseCurrency.name
-                changeBaseCurrencyFlag(baseCurrency)
-            }
+        requireActivity().runOnUiThread {
+            binding.tvBaseCurrency.text = baseCurrency.name
+            changeBaseCurrencyFlag(baseCurrency)
         }
     }
 

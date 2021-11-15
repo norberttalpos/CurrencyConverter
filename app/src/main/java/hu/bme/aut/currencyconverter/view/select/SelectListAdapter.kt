@@ -22,8 +22,11 @@ class SelectListAdapter(private val listener: SelectionCurrencyClickedListener):
 
         holder.binding.ivFlag.setImageResource(CurrencyFlagImageGetter.getImageResource(currencyItem.name))
         holder.binding.tvName.text = currencyItem.name
-        holder.binding.ibRemove.setOnClickListener {
-            listener.onCurrencyClicked(CurrencySelection(name = currencyItem.name))
+        holder.binding.cbSelected.isChecked = currencyItem.selected
+
+        holder.binding.cbSelected.setOnClickListener {
+            currencyItem.selected = !currencyItem.selected
+            listener.onSelectionToggled(currencyItem)
         }
     }
 
@@ -36,6 +39,6 @@ class SelectListAdapter(private val listener: SelectionCurrencyClickedListener):
     }
 
     interface SelectionCurrencyClickedListener {
-        fun onCurrencyClicked(currencyItem: CurrencySelection)
+        fun onSelectionToggled(currencyItem: CurrencySelection)
     }
 }
