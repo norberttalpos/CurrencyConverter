@@ -5,8 +5,19 @@
     android:layout_height="match_parent"
     tools:context=".view.pages.list.CurrencyListFragment">
 
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:scaleX="1.5"
+        android:scaleY="1.5"
+        android:indeterminate="true"
+        android:indeterminateTint="@color/teal_700"
+        />
 
     <LinearLayout
+        android:id="@+id/rootContainer"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
@@ -14,6 +25,7 @@
         >
 
         <LinearLayout
+            android:id="@+id/baseCurrencyLayout"
             android:layout_width="match_parent"
             android:layout_height="80dp"
             android:orientation="horizontal"

@@ -4,7 +4,10 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.LinearLayout
+import android.widget.ProgressBar
 import android.widget.Toast
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
@@ -31,12 +34,20 @@ class CurrencyListFragment : Fragment(), CurrencyListAdapter.CurrencyClickedList
     private lateinit var adapter: CurrencyListAdapter
     private lateinit var swipeContainer: SwipeRefreshLayout
 
+    private lateinit var rootContainer: LinearLayout
+    private lateinit var progressBar: ProgressBar
+
     private lateinit var baseCurrency: CurrencySelection
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = FragmentCurrencyListBinding.inflate(inflater, container, false)
 
         database = CurrencyDatabase.getDatabase(requireActivity().applicationContext)
+
+        rootContainer = binding.rootContainer
+        rootContainer.isVisible = false
+
+        progressBar = binding.progressBar
 
         return binding.root
     }
@@ -79,6 +90,7 @@ class CurrencyListFragment : Fragment(), CurrencyListAdapter.CurrencyClickedList
     }
 
     private suspend fun loadCurrencyRates() {
+        Thread.sleep(500)
         val toCurrencies: List<CurrencySelection> = withContext(Dispatchers.IO) {
             database.currencySelectionDao().getSelected()
         }
@@ -118,8 +130,15 @@ class CurrencyListFragment : Fragment(), CurrencyListAdapter.CurrencyClickedList
 
     private fun updateItems(items: List<CurrencyWithRate>) {
         requireActivity().runOnUiThread {
+            loadingEnded()
+
             adapter.update(items)
         }
+    }
+
+    private fun loadingEnded() {
+        progressBar.isVisible = false
+        rootContainer.isVisible = true
     }
 
     override fun onCurrencyClicked(currencyItem: CurrencySelection) {
