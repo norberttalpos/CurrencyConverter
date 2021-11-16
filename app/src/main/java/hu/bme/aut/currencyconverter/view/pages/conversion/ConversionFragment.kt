@@ -116,6 +116,13 @@ class ConversionFragment : Fragment(), ConversionDialogFragment.CurrencySelected
     private fun initConvertButton() {
         buttonConvert.setOnClickListener {
 
+            if(fromCurrency == toCurrency) {
+                setResult(this.amount.toDouble())
+                saveConversionToDb(Conversion(from = fromCurrency, to = toCurrency, amount = amount, result = this.amount.toDouble()))
+
+                return@setOnClickListener
+            }
+
             NetworkManager.getConversion(fromCurrency.name, toCurrency.name, this.amount.toDouble())?.enqueue(object :
                 Callback<CurrencyConversionResponse?> {
                 override fun onResponse(call: Call<CurrencyConversionResponse?>, response: Response<CurrencyConversionResponse?>) {
