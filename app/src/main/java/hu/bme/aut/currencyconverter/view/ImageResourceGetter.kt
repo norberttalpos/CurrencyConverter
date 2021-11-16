@@ -4,7 +4,6 @@ import androidx.annotation.DrawableRes
 import hu.bme.aut.currencyconverter.R
 import hu.bme.aut.currencyconverter.data.CurrencyEnum
 
-
 @DrawableRes()
 fun getImageResource(name: String): Int {
     return when (name) {

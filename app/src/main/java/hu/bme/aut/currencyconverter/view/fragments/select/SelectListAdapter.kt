@@ -2,10 +2,15 @@ package hu.bme.aut.currencyconverter.view.fragments.select
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import android.widget.CheckBox
 import androidx.recyclerview.widget.RecyclerView
 import hu.bme.aut.currencyconverter.data.repository.selection.CurrencySelection
 import hu.bme.aut.currencyconverter.databinding.ItemSelectListBinding
 import hu.bme.aut.currencyconverter.view.getImageResource
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class SelectListAdapter(private val listener: SelectionCurrencyClickedListener): RecyclerView.Adapter<SelectListAdapter.SelectListItemViewHolder>() {
 
@@ -25,8 +30,7 @@ class SelectListAdapter(private val listener: SelectionCurrencyClickedListener):
         holder.binding.cbSelected.isChecked = currencyItem.selected
 
         holder.binding.cbSelected.setOnClickListener {
-            currencyItem.selected = !currencyItem.selected
-            listener.onSelectionToggled(currencyItem)
+            listener.onSelectionToggled(currencyItem, holder.binding.cbSelected)
         }
     }
 
@@ -39,6 +43,6 @@ class SelectListAdapter(private val listener: SelectionCurrencyClickedListener):
     }
 
     interface SelectionCurrencyClickedListener {
-        fun onSelectionToggled(currencyItem: CurrencySelection)
+        fun onSelectionToggled(currencyItem: CurrencySelection, checkBox: CheckBox)
     }
 }

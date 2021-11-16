@@ -2,10 +2,11 @@ package hu.bme.aut.currencyconverter.data.repository.conversion
 
 import androidx.room.*
 import com.google.gson.annotations.SerializedName
+import hu.bme.aut.currencyconverter.data.CurrencyEnum
 import hu.bme.aut.currencyconverter.data.repository.selection.CurrencySelection
 
 @Entity(tableName = "conversion",
-        foreignKeys = [
+/*        foreignKeys = [
             ForeignKey(
                 entity = CurrencySelection::class,
                 parentColumns = arrayOf("id"),
@@ -16,7 +17,7 @@ import hu.bme.aut.currencyconverter.data.repository.selection.CurrencySelection
                 parentColumns = arrayOf("id"),
                 childColumns = arrayOf("to"),
             ),
-        ]
+        ]*/
 )
 data class Conversion(
     @ColumnInfo(name = "conversion_id")
@@ -24,12 +25,15 @@ data class Conversion(
     @PrimaryKey(autoGenerate = true)
     var id: Long? = null,
 
-    var from: String,
+    @ColumnInfo(name = "from")
+    var from: CurrencyEnum,
 
-    var to: String,
+    @ColumnInfo(name = "to")
+    var to: CurrencyEnum,
 
-    var amount: Double,
+    @ColumnInfo(name = "amount")
+    var amount: Int,
 
-    @ColumnInfo(name = "date")
-    var date: String,
+    @ColumnInfo(name = "result")
+    var result: Double,
 )

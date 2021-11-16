@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
+import android.widget.CheckBox
 import android.widget.LinearLayout
 import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.Fragment
@@ -89,9 +90,20 @@ class SelectListFragment : Fragment(), SelectListAdapter.SelectionCurrencyClicke
         }
     }
 
-    override fun onSelectionToggled(currencyItem: CurrencySelection) {
+    override fun onSelectionToggled(currencyItem: CurrencySelection, checkBox: CheckBox) {
         CoroutineScope(Dispatchers.IO).launch {
-            toggleInDb(currencyItem)
+
+            val nbSelected = nbSelectedInDb()
+
+            if(nbSelected >= 3 && currencyItem.selected || nbSelected >= 2 && !currencyItem.selected) {
+                currencyItem.selected = !currencyItem.selected
+                toggleInDb(currencyItem)
+            }
+            else {
+                requireActivity().runOnUiThread {
+                    checkBox.isChecked = true
+                }
+            }
         }
     }
 
@@ -99,6 +111,16 @@ class SelectListFragment : Fragment(), SelectListAdapter.SelectionCurrencyClicke
         withContext(Dispatchers.IO) {
             database.currencySelectionDao().toggleSelection(currencyItem)
         }
+    }
+
+    private suspend fun nbSelectedInDb(): Int {
+        var result = -1
+
+        withContext(Dispatchers.IO) {
+            result = database.currencySelectionDao().getNbSelected()
+        }
+
+        return result
     }
 
     private fun View.hideKeyboard() {

@@ -61,7 +61,15 @@ class CurrencyListFragment : Fragment(), CurrencyListAdapter.CurrencyClickedList
 
     private suspend fun initBaseCurrency() {
         withContext(Dispatchers.IO) {
-            baseCurrency = database.currencySelectionDao().getBase()!!
+            var baseCurrencyInDb = database.currencySelectionDao().getBase()
+            if(baseCurrencyInDb == null) {
+                database.currencySelectionDao().makeNewBase()
+                baseCurrencyInDb = database.currencySelectionDao().getBase()
+
+                baseCurrency = baseCurrencyInDb!!
+            }
+            else
+                baseCurrency = baseCurrencyInDb
         }
 
         requireActivity().runOnUiThread {

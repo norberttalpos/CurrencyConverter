@@ -4,11 +4,14 @@ import androidx.room.*
 
 @Dao
 interface CurrencySelectionDao {
-    @Query("SELECT * FROM currencySelection")
+    @Query("SELECT * FROM currencySelection ORDER BY selected DESC")
     fun getAll(): List<CurrencySelection>
 
     @Query("SELECT * FROM currencySelection WHERE selected = 1 AND base = 0")
     fun getSelected(): List<CurrencySelection>
+
+    @Query("SELECT COUNT(*) FROM currencySelection WHERE selected = 1")
+    fun getNbSelected(): Int
 
     @Query("SELECT * FROM currencySelection WHERE base = 1")
     fun getBase(): CurrencySelection?
@@ -37,6 +40,17 @@ interface CurrencySelectionDao {
     }
 
     @Transaction
+    fun makeNewBase() {
+        val newBaseCurrency = this.getAll().first {
+            it.selected
+        }
+
+        newBaseCurrency.base = true
+
+        this.update(newBaseCurrency)
+    }
+
+    @Transaction
     fun toggleSelection(selectionToToggle: CurrencySelection) {
 
         val baseAfterToggle: Boolean = if(selectionToToggle.selected)
@@ -44,19 +58,7 @@ interface CurrencySelectionDao {
         else
             false
 
-        val needsNewBase = !selectionToToggle.selected && selectionToToggle.base
-
         selectionToToggle.base = baseAfterToggle
         update(selectionToToggle)
-
-        if(needsNewBase) {
-            val newBaseCurrency = this.getAll().first {
-                it.selected
-            }
-
-            newBaseCurrency.base = true
-
-            update(newBaseCurrency)
-        }
     }
 }

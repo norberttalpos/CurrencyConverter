@@ -2,12 +2,8 @@ package hu.bme.aut.currencyconverter.view
 
 import android.os.Bundle
 import android.view.MenuItem
-import android.view.View
-import android.view.inputmethod.InputMethodManager
-import androidx.annotation.DrawableRes
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.Fragment
 import com.google.android.material.navigation.NavigationView
@@ -33,6 +29,8 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
     private lateinit var database: CurrencyDatabase
 
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
@@ -42,8 +40,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         this.initDrawer()
 
         this.initDb()
-
-        supportFragmentManager.beginTransaction().replace(R.id.flContent, CurrencyListFragment()).commit()
 
         setContentView(binding.root)
     }
@@ -61,15 +57,28 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             if(persistedSelections.isEmpty()) {
                 val baseCurrency = CurrencySelection(name = CurrencyEnum.HUF.name, selected = true, base = true)
 
+                var nbSelectedInserted = 0
                 CurrencyEnum.values().forEach {
-                    if(it.name != CurrencyEnum.HUF.name)
+                    if(it.name != CurrencyEnum.HUF.name && nbSelectedInserted < 6) {
                         database.currencySelectionDao().insert(CurrencySelection(name = it.name, selected = true, base = false))
+                        ++nbSelectedInserted
+                    }
+                    else if(it.name != CurrencyEnum.HUF.name) {
+                        database.currencySelectionDao().insert(CurrencySelection(name = it.name, selected = false, base = false))
+                    }
                     else {
                         database.currencySelectionDao().insert(baseCurrency)
+                        ++nbSelectedInserted
                     }
                 }
             }
+
+            onDbInitEnded()
         }
+    }
+
+    private fun onDbInitEnded() {
+        supportFragmentManager.beginTransaction().replace(R.id.flContent, CurrencyListFragment()).commit()
     }
 
     private fun initDrawer() {
