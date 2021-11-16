@@ -12,9 +12,10 @@ import hu.bme.aut.currencyconverter.data.CurrencyEnum
 import hu.bme.aut.currencyconverter.data.repository.CurrencyDatabase
 import hu.bme.aut.currencyconverter.data.repository.selection.CurrencySelection
 import hu.bme.aut.currencyconverter.databinding.ActivityMainBinding
-import hu.bme.aut.currencyconverter.view.fragments.conversion.ConversionFragment
-import hu.bme.aut.currencyconverter.view.fragments.list.CurrencyListFragment
-import hu.bme.aut.currencyconverter.view.fragments.select.SelectListFragment
+import hu.bme.aut.currencyconverter.view.pages.conversion.ConversionFragment
+import hu.bme.aut.currencyconverter.view.pages.list.CurrencyListFragment
+import hu.bme.aut.currencyconverter.view.pages.previous.PreviousConversionsFragment
+import hu.bme.aut.currencyconverter.view.pages.select.SelectListFragment
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -116,7 +117,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 fragment = ConversionFragment()
             }
             R.id.nav_prev_conversions -> {
-                fragment = CurrencyListFragment()
+                fragment = PreviousConversionsFragment()
             }
         }
 

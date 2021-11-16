@@ -1,4 +1,4 @@
-package hu.bme.aut.currencyconverter.view.fragments.select
+package hu.bme.aut.currencyconverter.view.pages.select
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -7,10 +7,6 @@ import androidx.recyclerview.widget.RecyclerView
 import hu.bme.aut.currencyconverter.data.repository.selection.CurrencySelection
 import hu.bme.aut.currencyconverter.databinding.ItemSelectListBinding
 import hu.bme.aut.currencyconverter.view.getImageResource
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 
 class SelectListAdapter(private val listener: SelectionCurrencyClickedListener): RecyclerView.Adapter<SelectListAdapter.SelectListItemViewHolder>() {
 

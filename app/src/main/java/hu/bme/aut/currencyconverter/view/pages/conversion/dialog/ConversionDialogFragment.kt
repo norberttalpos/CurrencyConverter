@@ -1,4 +1,4 @@
-package hu.bme.aut.currencyconverter.view.fragments.conversion.dialog
+package hu.bme.aut.currencyconverter.view.pages.conversion.dialog
 
 import android.app.Dialog
 import android.os.Bundle

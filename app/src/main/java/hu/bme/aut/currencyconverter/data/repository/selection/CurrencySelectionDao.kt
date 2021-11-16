@@ -29,7 +29,7 @@ interface CurrencySelectionDao {
     fun delete(currencyName: String)
 
     @Query("DELETE FROM currencySelection")
-    fun deleteAll(): Unit
+    fun deleteAll()
 
     @Transaction
     fun changeBase(previous: CurrencySelection, current: CurrencySelection) {

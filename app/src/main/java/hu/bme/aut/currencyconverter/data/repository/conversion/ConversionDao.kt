@@ -15,4 +15,7 @@ interface ConversionDao {
 
     @Delete
     fun delete(conversion: Conversion)
+
+    @Query("DELETE FROM conversion")
+    fun deleteAll()
 }

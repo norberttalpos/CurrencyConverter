@@ -1,4 +1,4 @@
-package hu.bme.aut.currencyconverter.view.fragments.conversion
+package hu.bme.aut.currencyconverter.view.pages.conversion
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -15,7 +15,7 @@ import hu.bme.aut.currencyconverter.data.repository.conversion.Conversion
 import hu.bme.aut.currencyconverter.databinding.FragmentConversionBinding
 import hu.bme.aut.currencyconverter.network.NetworkManager
 import hu.bme.aut.currencyconverter.network.response.CurrencyConversionResponse
-import hu.bme.aut.currencyconverter.view.fragments.conversion.dialog.ConversionDialogFragment
+import hu.bme.aut.currencyconverter.view.pages.conversion.dialog.ConversionDialogFragment
 import hu.bme.aut.currencyconverter.view.getImageResource
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers

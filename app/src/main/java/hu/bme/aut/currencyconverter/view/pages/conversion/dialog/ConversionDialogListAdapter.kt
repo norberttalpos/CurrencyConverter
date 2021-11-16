@@ -1,4 +1,4 @@
-package hu.bme.aut.currencyconverter.view.fragments.conversion.dialog
+package hu.bme.aut.currencyconverter.view.pages.conversion.dialog
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -11,7 +11,7 @@ class ConversionDialogListAdapter(private val listener: DialogListClickedListene
 
     inner class DialogListItemViewHolder(val binding: ItemDialogListBinding) : RecyclerView.ViewHolder(binding.root)
 
-    private var items = listOf<CurrencyEnum>()
+    private var items = mutableListOf<CurrencyEnum>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DialogListItemViewHolder = DialogListItemViewHolder(
         ItemDialogListBinding.inflate(LayoutInflater.from(parent.context), parent, false)
@@ -30,8 +30,10 @@ class ConversionDialogListAdapter(private val listener: DialogListClickedListene
 
     override fun getItemCount(): Int = items.size
 
-    fun setItems(items: List<CurrencyEnum>) {
-        this.items = items
+    fun setItems(newItems: List<CurrencyEnum>) {
+        items.clear()
+        items.addAll(newItems)
+        notifyDataSetChanged()
     }
 
     interface DialogListClickedListener {

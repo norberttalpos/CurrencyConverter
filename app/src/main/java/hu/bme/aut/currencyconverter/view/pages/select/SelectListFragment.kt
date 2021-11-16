@@ -1,4 +1,4 @@
-package hu.bme.aut.currencyconverter.view.fragments.select
+package hu.bme.aut.currencyconverter.view.pages.select
 
 import android.os.Bundle
 import android.view.LayoutInflater
