@@ -123,8 +123,8 @@ class ConversionFragment : Fragment(), ConversionDialogFragment.CurrencySelected
                 return@setOnClickListener
             }
 
-            NetworkManager.getConversion(fromCurrency.name, toCurrency.name, this.amount.toDouble())?.enqueue(object :
-                Callback<CurrencyConversionResponse?> {
+            NetworkManager.getConversion(fromCurrency.name, toCurrency.name, this.amount.toDouble())?.enqueue(object : Callback<CurrencyConversionResponse?> {
+
                 override fun onResponse(call: Call<CurrencyConversionResponse?>, response: Response<CurrencyConversionResponse?>) {
                     if (response.isSuccessful) {
                         val result = response.body()!!.rates[toCurrency.name]!!.toDouble()

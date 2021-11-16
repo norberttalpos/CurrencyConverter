@@ -96,8 +96,8 @@ class CurrencyListFragment : Fragment(), CurrencyListAdapter.CurrencyClickedList
 
         val toCurrenciesAsString = ListToQueryStringConverter.convertListToQueryString(toCurrencies)
 
-        NetworkManager.getCurrencies(baseCurrency.name, toCurrenciesAsString)?.enqueue(object :
-            Callback<CurrencyResponse?> {
+        NetworkManager.getCurrencies(baseCurrency.name, toCurrenciesAsString)?.enqueue(object : Callback<CurrencyResponse?> {
+
             override fun onResponse(call: Call<CurrencyResponse?>, response: Response<CurrencyResponse?>) {
                 if (response.isSuccessful) {
                     updateItems(convertResponseToCurrencyItems(response.body()))

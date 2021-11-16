@@ -7,7 +7,7 @@ import androidx.room.Query
 
 @Dao
 interface ConversionDao {
-    @Query("SELECT * FROM conversion")
+    @Query("SELECT * FROM conversion ORDER BY conversion_id DESC")
     fun getAll(): List<Conversion>
 
     @Insert
