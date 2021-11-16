@@ -45,7 +45,7 @@ class ConversionFragment : Fragment(), ConversionDialogFragment.CurrencySelected
 
     private lateinit var buttonConvert: Button
 
-    private lateinit var selectLayout: RelativeLayout
+    private lateinit var selectLayout: LinearLayout
 
     private var amount: Int = 0
 
