@@ -28,7 +28,7 @@
             android:text="From Currency" />
 
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="4"
             android:layout_marginTop="10dp"
@@ -36,7 +36,7 @@
             android:weightSum="5">
 
             <LinearLayout
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_weight="1"
                 android:layout_marginTop="10dp"
@@ -46,13 +46,13 @@
                 <ImageView
                     android:id="@+id/ivFlagFrom"
                     android:layout_width="0dp"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:layout_marginStart="8dp"
                     android:layout_marginEnd="10dp"
                     android:layout_weight="2"
                     android:paddingHorizontal="5dp"
                     android:paddingVertical="3dp"
-                    android:src="@drawable/huf" />
+                    android:src="@drawable/jpy" />
 
                 <TextView
                     android:id="@+id/tvNameFrom"
@@ -81,7 +81,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:inputType="number"
-                    android:textSize="30sp"
+                    android:textSize="25sp"
                     />
 
             </com.google.android.material.textfield.TextInputLayout>
@@ -129,7 +129,7 @@
             android:text="To Currency" />
 
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="4"
             android:layout_marginTop="10dp"
@@ -137,7 +137,7 @@
             android:weightSum="3">
 
             <LinearLayout
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_weight="1"
                 android:layout_marginTop="10dp"
@@ -153,7 +153,7 @@
                     android:layout_weight="2"
                     android:paddingHorizontal="5dp"
                     android:paddingVertical="3dp"
-                    android:src="@drawable/huf" />
+                    android:src="@drawable/jpy" />
 
                 <TextView
                     android:id="@+id/tvNameTo"
