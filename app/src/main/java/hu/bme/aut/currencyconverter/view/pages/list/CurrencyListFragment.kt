@@ -90,7 +90,6 @@ class CurrencyListFragment : Fragment(), CurrencyListAdapter.CurrencyClickedList
     }
 
     private suspend fun loadCurrencyRates() {
-        Thread.sleep(500)
         val toCurrencies: List<CurrencySelection> = withContext(Dispatchers.IO) {
             database.currencySelectionDao().getSelected()
         }
@@ -143,9 +142,10 @@ class CurrencyListFragment : Fragment(), CurrencyListAdapter.CurrencyClickedList
 
     override fun onCurrencyClicked(currencyItem: CurrencySelection) {
         if(currencyItem.name != this.baseCurrency.name)
+            progressBar.isVisible = true
             CoroutineScope(Dispatchers.IO).launch {
-                updateBaseCurrency(currencyItem)
                 loadCurrencyRates()
+                updateBaseCurrency(currencyItem)
             }
     }
 
