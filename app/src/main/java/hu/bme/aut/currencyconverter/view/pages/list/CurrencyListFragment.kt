@@ -144,13 +144,13 @@ class CurrencyListFragment : Fragment(), CurrencyListAdapter.CurrencyClickedList
         if(currencyItem.name != this.baseCurrency.name)
             progressBar.isVisible = true
             CoroutineScope(Dispatchers.IO).launch {
-                loadCurrencyRates()
                 updateBaseCurrency(currencyItem)
+                loadCurrencyRates()
+                updateBaseCurrencyView()
             }
     }
 
     private suspend fun updateBaseCurrency(currencyItem: CurrencySelection) {
-
         val previous = this.baseCurrency
 
         withContext(Dispatchers.IO) {
@@ -158,10 +158,12 @@ class CurrencyListFragment : Fragment(), CurrencyListAdapter.CurrencyClickedList
 
             baseCurrency = database.currencySelectionDao().getBase()!!
         }
+    }
 
+    private fun updateBaseCurrencyView() {
         requireActivity().runOnUiThread {
-            this.binding.tvBaseCurrency.text = baseCurrency.name
-            this.changeBaseCurrencyFlag(baseCurrency)
+            binding.tvBaseCurrency.text = baseCurrency.name
+            changeBaseCurrencyFlag(baseCurrency)
         }
     }
 
