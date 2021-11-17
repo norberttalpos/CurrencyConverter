@@ -12,7 +12,7 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import hu.bme.aut.currencyconverter.data.CurrencyWithRate
-import hu.bme.aut.currencyconverter.data.ListToQueryStringConverter
+import hu.bme.aut.currencyconverter.data.convertListToQueryString
 import hu.bme.aut.currencyconverter.data.repository.CurrencyDatabase
 import hu.bme.aut.currencyconverter.data.repository.selection.CurrencySelection
 import hu.bme.aut.currencyconverter.databinding.FragmentCurrencyListBinding
@@ -94,7 +94,7 @@ class CurrencyListFragment : Fragment(), CurrencyListAdapter.CurrencyClickedList
             database.currencySelectionDao().getSelected()
         }
 
-        val toCurrenciesAsString = ListToQueryStringConverter.convertListToQueryString(toCurrencies)
+        val toCurrenciesAsString = convertListToQueryString(toCurrencies)
 
         NetworkManager.getCurrencies(baseCurrency.name, toCurrenciesAsString)?.enqueue(object : Callback<CurrencyResponse?> {
 

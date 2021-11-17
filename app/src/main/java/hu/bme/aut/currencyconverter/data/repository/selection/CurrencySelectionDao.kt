@@ -16,7 +16,7 @@ interface CurrencySelectionDao {
     @Query("SELECT * FROM currencySelection WHERE base = 1")
     fun getBase(): CurrencySelection?
 
-    @Query("SELECT * FROM currencySelection WHERE name LIKE '%' || :searchText || '%'")
+    @Query("SELECT * FROM currencySelection WHERE name LIKE '%' || :searchText || '%' ORDER BY selected DESC")
     fun search(searchText: String): List<CurrencySelection>
 
     @Insert

@@ -19,7 +19,7 @@ abstract class CurrencyDatabase : RoomDatabase() {
             return Room.databaseBuilder(
                 applicationContext,
                 CurrencyDatabase::class.java,
-                "shopping-list"
+                "currency_db"
             ).build();
         }
     }
