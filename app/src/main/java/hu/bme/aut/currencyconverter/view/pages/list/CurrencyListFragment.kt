@@ -70,6 +70,13 @@ class CurrencyListFragment : Fragment(), CurrencyListAdapter.CurrencyClickedList
         }
     }
 
+    private fun initRecyclerView() {
+        adapter = CurrencyListAdapter(this)
+
+        binding.rvMain.layoutManager = LinearLayoutManager(requireContext())
+        binding.rvMain.adapter = adapter
+    }
+
     private suspend fun initBaseCurrency() {
         withContext(Dispatchers.IO) {
             var baseCurrencyInDb = database.currencySelectionDao().getBase()
@@ -118,13 +125,6 @@ class CurrencyListFragment : Fragment(), CurrencyListAdapter.CurrencyClickedList
         return response!!.rates.keys.map {
             CurrencyWithRate(it, response.rates[it])
         }
-    }
-
-    private fun initRecyclerView() {
-        adapter = CurrencyListAdapter(this)
-
-        binding.rvMain.layoutManager = LinearLayoutManager(requireContext())
-        binding.rvMain.adapter = adapter
     }
 
     private fun updateItems(items: List<CurrencyWithRate>) {

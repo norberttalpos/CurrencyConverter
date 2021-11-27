@@ -31,7 +31,6 @@ class PreviousConversionsFragment : Fragment() {
 
         deleteAllButton = binding.textButtonDeleteAll
         deleteAllButton.setOnClickListener {
-            val kekw = adapter.itemCount
             CoroutineScope(Dispatchers.IO).launch {
                 withContext(Dispatchers.IO) {
                     database.conversionListDao().deleteAll()

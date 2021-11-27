@@ -12,7 +12,7 @@
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="10dp"
         android:layout_marginBottom="-30dp"
-        android:text="Delete All" />
+        android:text="@string/delete_all" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvPrevConv"

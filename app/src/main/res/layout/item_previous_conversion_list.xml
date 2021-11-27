@@ -27,7 +27,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:textSize="15sp"
-            android:text="FROM" />
+            android:text="@string/from" />
 
         <LinearLayout
             android:layout_width="150dp"
@@ -63,6 +63,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:textSize="30sp"
+            android:maxLength="8"
             tools:text="Amount" />
 
     </LinearLayout>
@@ -87,7 +88,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:textSize="15sp"
-            android:text="TO" />
+            android:text="@string/to" />
 
         <LinearLayout
             android:layout_width="150dp"
@@ -123,6 +124,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:textSize="30sp"
+            android:maxLength="8"
             tools:text="Result" />
 
     </LinearLayout>
